@@ -24,6 +24,13 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ error: "Internal Server Error" });
 });
 
+/**
+ * Health check endpoint
+ */
+app.get("/ping", (req: Request, res: Response) => {
+  res.status(200).send("Server is alive and running smoothly! 🚀");
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on http://localhost:${PORT}`);
