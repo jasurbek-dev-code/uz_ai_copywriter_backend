@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id                 String              @id @default(uuid())
+  telegramId         String              @unique
+  name               String
+  subscriptionStatus String              @default("FREE")
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  history            GenerationHistory[]
+}
+
+model GenerationHistory {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  promptText    String
+  contentType   String
+  generatedText String   @db.Text
+  createdAt     DateTime @default(now())
+}
